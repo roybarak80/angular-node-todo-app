@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Todo } from '../interfaces/todo.interface';
 
@@ -12,7 +12,10 @@ export class TodoService {
   constructor(private http: HttpClient) {}
 
   getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.apiUrl);
+    const headers = new HttpHeaders({
+      'Cache-Control': 'no-cache'
+    });
+    return this.http.get<Todo[]>(this.apiUrl, { headers });
   }
 
   addTodo(todo: Todo): Observable<Todo> {
