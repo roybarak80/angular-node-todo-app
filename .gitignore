@@ -4,12 +4,12 @@ dist/
 .env
 *.log
 
-# Backend-specific
-backend/node_modules/
-backend/dist/
-backend/.env
-
-# Frontend-specific
+# Angular
 frontend/node_modules/
 frontend/dist/
 frontend/.env
+
+# Node
+backend/node_modules/
+backend/dist/
+backend/.env

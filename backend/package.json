@@ -1,0 +1,24 @@
+{
+  "name": "todo-app-backend",
+  "version": "1.0.0",
+  "description": "Backend for ToDo list app using json-server, Express, and TypeScript",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsc --watch & nodemon dist/server.js",
+    "start:api": "node dist/server.js",
+    "prestart:api": "npm run build"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "json-server": "^0.17.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/json-server": "^0.14.7",
+    "@types/node": "^20.10.0",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
+  }
+}

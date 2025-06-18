@@ -1,1 +1,0 @@
-# angular-node-todo-app
