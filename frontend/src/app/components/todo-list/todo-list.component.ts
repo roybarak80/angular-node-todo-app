@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TodoService } from '../todo.service';
-import { Todo } from '../todo.model';
+import { TodoService } from '../../services/todo.service';
+import { Todo } from '../../interfaces/todo.interface';
+import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TodoItemComponent],
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css']
+  styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
   newTodoTitle: string = '';
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService) {}
 
   ngOnInit(): void {
     this.loadTodos();
@@ -40,20 +41,13 @@ export class TodoListComponent implements OnInit {
     }
   }
 
-  toggleTodo(todo: Todo): void {
-    const updatedTodo = { ...todo, completed: !todo.completed };
-    this.todoService.updateTodo(updatedTodo).subscribe(() => {
-      todo.completed = updatedTodo.completed;
+  updateTodo(todo: Todo): void {
+    this.todoService.updateTodo(todo).subscribe(updatedTodo => {
+      const index = this.todos.findIndex(t => t.id === updatedTodo.id);
+      if (index !== -1) {
+        this.todos[index] = updatedTodo;
+      }
     });
-  }
-
-  updateTodoTitle(todo: Todo, newTitle: string): void {
-    if (newTitle.trim()) {
-      const updatedTodo = { ...todo, title: newTitle };
-      this.todoService.updateTodo(updatedTodo).subscribe(() => {
-        todo.title = newTitle;
-      });
-    }
   }
 
   deleteTodo(id: number): void {

@@ -1,0 +1,17 @@
+<div class="todo-item-content">
+  <input
+    type="checkbox"
+    [checked]="todo.completed"
+    (change)="toggleCompleted()"
+    class="todo-checkbox"
+  >
+  <input
+    type="text"
+    [(ngModel)]="todo.title"
+    (blur)="updateTitle(todo.title)"
+    (keyup.enter)="updateTitle(todo.title)"
+    [ngClass]="{'completed': todo.completed}"
+    class="todo-title"
+  >
+  <button (click)="deleteTodo()" class="delete-button">Delete</button>
+</div>
