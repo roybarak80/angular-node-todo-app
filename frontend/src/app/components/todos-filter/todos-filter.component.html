@@ -1,0 +1,19 @@
+<div class="filter-container">
+  <mat-form-field appearance="outline" class="filter-field">
+    <mat-label>Status</mat-label>
+    <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
+      <mat-option value="all">All</mat-option>
+      <mat-option value="completed">Completed</mat-option>
+      <mat-option value="not-completed">Not Completed</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="filter-field">
+    <mat-label>Date Range</mat-label>
+    <mat-select [(ngModel)]="dateFilter" (selectionChange)="applyFilters()">
+      <mat-option value="all">All Time</mat-option>
+      <mat-option value="today">Today</mat-option>
+      <mat-option value="week">Last 7 Days</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

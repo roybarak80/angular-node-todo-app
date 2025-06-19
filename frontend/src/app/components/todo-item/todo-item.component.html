@@ -13,5 +13,7 @@
     [ngClass]="{'completed': todo.completed}"
     class="todo-title"
   >
+  <span class="created-at" *ngIf="todo.createdAt">{{ todo.createdAt | date:'short' }}</span>
+  <span class="due-date" *ngIf="todo.dueDate">{{ todo.dueDate | date:'shortDate' }}</span>
   <button (click)="deleteTodo()" class="delete-button">Delete</button>
 </div>

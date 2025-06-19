@@ -1,10 +1,39 @@
-.container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 0 20px;
-}
 
-h1 {
-  text-align: center;
-  color: #333;
+@import "../theme";
+
+.wrapper{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgb(219, 219, 219);
+
+.container {
+
+    background-image: url('../assets/bg.png');
+
+    width: 80%;
+
+    height: 80vh;
+    border-radius: 1rem;
+    display: flex
+    ;
+        align-items: center;
+        justify-content: center;
+    .foo{
+      width: 44%;
+    height: 80%;
+    padding: 2rem;
+    background-color: $background;
+    border-radius: 1rem;
+    box-shadow: -1px 0px 26px 10px rgba(0,0,0,0.65);    }
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+
+
 }

@@ -2,11 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Todo } from '../../interfaces/todo.interface';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatCardModule],
   templateUrl: './todo-item.component.html',
   styleUrls: ['./todo-item.component.scss']
 })
@@ -14,6 +15,7 @@ export class TodoItemComponent {
   @Input() todo!: Todo;
   @Output() update = new EventEmitter<Todo>();
   @Output() delete = new EventEmitter<number>();
+
 
   toggleCompleted(): void {
     this.todo = { ...this.todo, completed: !this.todo.completed };

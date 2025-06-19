@@ -1,7 +1,20 @@
+
+@import "../../../theme";
+.mat-card-content{
+  background-color: $card-bg;
+}
+
+.mat-mdc-card-content {
+
+  background-color: $card-bg;
+  border-color: $background;
+  box-shadow: var(--mdc-elevated-card-container-elevation);
+}
+
 .todo-item-content {
   display: flex;
   align-items: center;
-  gap: 10px;
+ // gap: 10px;
 }
 
 .todo-checkbox {
