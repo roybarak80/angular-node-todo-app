@@ -4,6 +4,9 @@ logs
 .git
 .gitignore
 *.log
+.angular
+frontend/dist
+.vscode
 frontend/node_modules
 backend/node_modules
 backend/dist
