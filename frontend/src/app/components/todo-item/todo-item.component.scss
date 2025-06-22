@@ -1,54 +1,23 @@
-
 @import "../../../theme";
-.mat-card-content{
-  background-color: $card-bg;
-}
-
-.mat-mdc-card-content {
-
-  background-color: $card-bg;
-  border-color: $background;
-  box-shadow: var(--mdc-elevated-card-container-elevation);
-}
 
 .todo-item-content {
+  background-color: $background-component;
   display: flex;
   align-items: center;
- // gap: 10px;
-}
-
-.todo-checkbox {
-  width: 20px;
-  height: 20px;
-}
-
-.todo-title {
-  flex: 1;
-  padding: 5px;
-  font-size: 16px;
-  border: none;
-  background: transparent;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 
   &.completed {
     text-decoration: line-through;
-    color: #888;
+    text-decoration-thickness: 3px;
+    color: $pink;
+    background-color: $completed-component;
   }
 
-  &:focus {
-    outline: none;
-    border-bottom: 1px solid #ccc;
-  }
-}
+  .due-date {
+    font-size: 0.8rem;
+    color: #ffffff;
 
-.delete-button {
-  padding: 5px 10px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #c82333;
   }
+
 }

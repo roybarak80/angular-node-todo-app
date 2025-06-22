@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
@@ -11,6 +12,8 @@ import { TodoService } from '../../services/todo.service';
 import { Todo } from '../../interfaces/todo.interface';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { TodosFilterComponent } from '../todos-filter/todos-filter.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { ComponentHeaderComponent } from "../component-header/component-header.component";
 
 @Component({
   selector: 'app-todo-list',
@@ -18,6 +21,7 @@ import { TodosFilterComponent } from '../todos-filter/todos-filter.component';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -25,7 +29,9 @@ import { TodosFilterComponent } from '../todos-filter/todos-filter.component';
     MatDatepickerModule,
     MatNativeDateModule,
     TodoItemComponent,
-    TodosFilterComponent
+    TodosFilterComponent,
+    MatDividerModule,
+    ComponentHeaderComponent
   ],
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
@@ -34,38 +40,62 @@ import { TodosFilterComponent } from '../todos-filter/todos-filter.component';
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
   filteredTodos: Todo[] = [];
-  newTodoTitle: string = '';
-  newTodoDueDate: Date | null = null;
-
-  constructor(private todoService: TodoService, public cdr: ChangeDetectorRef) {}
+  form!: FormGroup;
+  isSubmitting = false;
+  formKey = 0;
+  constructor(
+    private todoService: TodoService,
+    public cdr: ChangeDetectorRef,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.loadTodos();
+    this.form = this.fb.group({
+      newTodoTitle: ['', [Validators.required, Validators.minLength(1)]],
+      newTodoDueDate: [null, Validators.required]
+    });
+    this.form.reset();
+
   }
 
   loadTodos(): void {
     this.todoService.getTodos().subscribe(todos => {
-      this.todos = todos;
+      this.todos = todos.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB- dateA ;
+      });
       this.filteredTodos = todos;
       this.cdr.markForCheck();
     });
   }
 
   addTodo(): void {
-    if (this.newTodoTitle.trim()) {
-      const newTodo: Todo = {
-        title: this.newTodoTitle,
-        completed: false,
-        dueDate: this.newTodoDueDate ? this.newTodoDueDate.toISOString() : null
-      };
-      this.todoService.addTodo(newTodo).subscribe(todo => {
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    const formValue = this.form.value;
+
+    const newTodo: Todo = {
+      title: formValue.newTodoTitle.trim(),
+      completed: false,
+      dueDate: formValue.newTodoDueDate ? formValue.newTodoDueDate.toISOString() : null
+    };
+
+    this.todoService.addTodo(newTodo).subscribe({
+      next: (todo) => {
         this.todos = [...this.todos, todo];
         this.filteredTodos = [...this.todos];
-        this.newTodoTitle = '';
-        this.newTodoDueDate = null;
         this.cdr.markForCheck();
-      });
-    }
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   updateTodo(todo: Todo): void {
@@ -91,4 +121,5 @@ export class TodoListComponent implements OnInit {
     this.filteredTodos = todos;
     this.cdr.markForCheck();
   }
+
 }

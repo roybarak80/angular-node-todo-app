@@ -93,6 +93,7 @@ const validateTodo = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // API Routes
+
 app.get('/api/todos', async (req: Request, res: Response) => {
   try {
     const todos = await TodoModel.find().exec();

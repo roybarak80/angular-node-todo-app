@@ -1,23 +1,54 @@
 
 <div class="wrapper">
-  <div class="todo-input">
+  <form [formGroup]="form" class="todo-input" novalidate (ngSubmit)="addTodo()">
     <mat-form-field appearance="outline" class="todo-input-field">
       <mat-label>Add a new todo</mat-label>
-      <input matInput [(ngModel)]="newTodoTitle" (keyup.enter)="addTodo()" placeholder="Add a new todo">
+      <input
+        matInput
+        formControlName="newTodoTitle"
+        (keyup.enter)="addTodo()"
+        placeholder="Add a new todo"
+      >
+      <mat-error *ngIf="form.get('newTodoTitle')?.hasError('required') && form.get('newTodoTitle')?.touched">
+        Todo title is required
+      </mat-error>
+      <mat-error *ngIf="form.get('newTodoTitle')?.hasError('minlength') && form.get('newTodoTitle')?.touched">
+        Todo title cannot be empty
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="todo-date-field">
       <mat-label>Due Date</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="newTodoDueDate" (ngModelChange)="cdr.markForCheck()">
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="newTodoDueDate"
+        (ngModelChange)="cdr.markForCheck()"
+      >
+      <mat-error *ngIf="form.get('newTodoDueDate')?.hasError('required') && form.get('newTodoDueDate')?.touched">
+        Due date is required
+      </mat-error>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="addTodo()">Add</button>
-  </div>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid || isSubmitting"
+    >
+      Add
+    </button>
+  </form>
 
   <app-todos-filter [todos]="todos" (filteredTodos)="onFilteredTodos($event)"></app-todos-filter>
+  <app-component-header [headerName]="'My Todos: '">
+    <span class="todos-counter"> {{todos.length}}</span>
+  </app-component-header>
 
   <mat-list class="todo-list">
-    <app-todo-item *ngFor="let todo of filteredTodos" [todo]="todo" (update)="updateTodo($event)" (delete)="deleteTodo($event)"></app-todo-item>
+    <app-todo-item *ngFor="let todo of filteredTodos;" [todo]="todo" (update)="updateTodo($event)" (delete)="deleteTodo($event)"></app-todo-item>
   </mat-list>
+
+
 </div>
 

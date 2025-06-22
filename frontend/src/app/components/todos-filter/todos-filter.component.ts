@@ -6,11 +6,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { Todo } from '../../interfaces/todo.interface';
+import { ComponentHeaderComponent } from "../component-header/component-header.component";
 
 @Component({
   selector: 'app-todos-filter',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, FormsModule],
+  imports: [CommonModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, FormsModule, ComponentHeaderComponent],
   templateUrl: './todos-filter.component.html',
   styleUrls: ['./todos-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

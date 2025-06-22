@@ -1,19 +1,31 @@
-<div class="todo-item-content">
-  <input
-    type="checkbox"
+<div class="todo-item-content" [ngClass]="{'completed': todo.completed}">
+  <mat-checkbox
     [checked]="todo.completed"
     (change)="toggleCompleted()"
+    color="primary"
     class="todo-checkbox"
-  >
+  ></mat-checkbox>
+
   <input
-    type="text"
+    matTooltip="Click to edit task's title"
+    [matTooltipPosition]="'above'"
+    matTooltipHideDelay="100"
+    class="todo-input"
+    placeholder="Todo title"
     [(ngModel)]="todo.title"
     (blur)="updateTitle(todo.title)"
     (keyup.enter)="updateTitle(todo.title)"
-    [ngClass]="{'completed': todo.completed}"
-    class="todo-title"
-  >
-  <span class="created-at" *ngIf="todo.createdAt">{{ todo.createdAt | date:'short' }}</span>
-  <span class="due-date" *ngIf="todo.dueDate">{{ todo.dueDate | date:'shortDate' }}</span>
-  <button (click)="deleteTodo()" class="delete-button">Delete</button>
+    required
+    [ngClass]="{ completed: todo.completed }"
+  />
+
+  <span class="due-date" *ngIf="todo.dueDate">
+    <span style="font-weight: bold">Due Date </span>
+    <span [style.color]="todo.dueDate | dueDateChecker">
+      {{ todo.dueDate | date: 'shortDate' }}
+    </span>  </span>
+
+  <button mat-icon-button color="warn" (click)="deleteTodo()">
+    <mat-icon>delete</mat-icon>
+  </button>
 </div>
