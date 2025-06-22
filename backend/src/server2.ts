@@ -6,26 +6,6 @@ import winston from 'winston';
 import dotenv from 'dotenv';
 import { Todo } from './types/todo';
 
-// Initialize Express app
-const app = express();
-app.disable('etag');
-const port: number = parseInt(process.env.PORT || '3000', 10);
-// Middleware
-app.use(helmet()); // Secure HTTP headers
-app.use(express.json()); // Parse JSON bodies
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per IP
-  message: { error: 'Too many requests, please try again later.' }
-}));
-
-// Log requests
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.url}`);
-  next();
-});
-
-
 // Load environment variables
 dotenv.config();
 
@@ -48,6 +28,28 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
+// Initialize Express app
+const app = express();
+app.disable('etag');
+const port: number = parseInt(process.env.PORT || '3000', 10);
+if (isNaN(port)) {
+  logger.error('Invalid port number:', process.env.PORT);
+  process.exit(1);
+}
+
+// Middleware
+app.use(helmet());
+app.use(express.json());
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: 'Too many requests, please try again later.' }
+}));
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
 
 // MongoDB connection
 logger.info(`Connecting to MongoDB at ${process.env.MONGODB_URI}`);
@@ -66,8 +68,8 @@ const todoSchema = new mongoose.Schema({
   dueDate: { type: Date, default: null, required: false }
 });
 
-
 const TodoModel = mongoose.model('Todo', todoSchema);
+
 // Validation middleware
 const validateTodo = (req: Request, res: Response, next: NextFunction) => {
   const todo: Partial<Todo> = req.body;
@@ -89,6 +91,7 @@ const validateTodo = (req: Request, res: Response, next: NextFunction) => {
   }
   next();
 };
+
 // API Routes
 
 app.get('/api/todos', async (req: Request, res: Response) => {
@@ -184,11 +187,14 @@ app.delete('/api/todos/:id', async (req: Request, res: Response) => {
 
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  logger.error('Unhandled error:', err);
-  res.status(500).json({ error: 'Internal server error' });
+  logger.error('Unhandled error:', {
+    message: err.message,
+    stack: err.stack
+  });
+  res.status(500).json({ error: 'Internal server error', details: err.message });
 });
 
 // Start server
-app.listen(port, () => {
+app.listen(port, '127.0.0.1', () => {
   logger.info(`Server is running on http://localhost:${port}`);
 });
