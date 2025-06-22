@@ -1,36 +1,37 @@
-.todo-input {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
+@import "../../../theme";
 
-.todo-input-field {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.add-button {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #218838;
+.wrapper {
+  background-color: $background;
+  .mat-mdc-card.mdc-card {
+    margin-bottom: 1rem;
   }
-}
+  .mat-mdc-card.mdc-card:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 
-.todo-list {
-  list-style: none;
-  padding: 0;
-}
+  .todo-input {
+    display: flex;
+    align-items: center;
+    .todo-input-field{
+      margin-right: 1rem;
+      width: 40%;
+    }
+    .todo-date-field{
+      margin-right: 1rem;
+      width: 40%;
+    }
+    button{
+      width: 20%;
+      margin-bottom: 1.5rem;
+    }
+  }
 
-.todo-item {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  .todo-list {
+    max-height: 350px;
+    overflow-y: auto;
+    margin-top: 1rem;
+  }
+  .todos-counter{
+    color: $pink;
+  }
 }

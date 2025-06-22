@@ -5,12 +5,7 @@ import { TodoListComponent } from './components/todo-list/todo-list.component';
   selector: 'app-root',
   standalone: true,
   imports: [TodoListComponent],
-  template: `
-    <div class="container">
-      <h1>ToDo List</h1>
-      <app-todo-list></app-todo-list>
-    </div>
-  `,
+  templateUrl :'../app/app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
